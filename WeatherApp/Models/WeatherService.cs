@@ -11,36 +11,43 @@ namespace WeatherApp.Models
         {
             var client = new HttpClient();
             var apiKey = System.Environment.GetEnvironmentVariable("WEATHER_API_KEY");
-            var response = await client.GetAsync($"https://api.weatherapi.com/v1/forecast.json?key={apiKey}&q={location}&days=1&aqi=no&alerts=no");
-            response.EnsureSuccessStatusCode();
-            var body = await response.Content.ReadAsStringAsync();
-
-            var parsedResponse = JObject.Parse(body);
-
-            string weatherConditions;
-            int? dailyWillitSnow = (int?)parsedResponse["forecast"]?["forecastday"]?[0]?["day"]?["daily_will_it_snow"];
-            int? dailyWillitRain = (int?)parsedResponse["forecast"]?["forecastday"]?[0]?["day"]?["daily_will_it_rain"];
-            int? cloud = (int?)parsedResponse["current"]?["cloud"];
-
-            weatherConditions = dailyWillitSnow == 1 ? "Snow"
-                : dailyWillitRain == 1 ? "Rain"
-                : cloud > 50 ? "Cloudy"
-                : "Sunny";
-
-            var locationName = (string?)parsedResponse["location"]?["name"];
-            var currentTemp = (double?)parsedResponse["current"]?["temp_c"];
-            var feelsLikeTemp = (double?)parsedResponse["current"]?["feelslike_c"];
-            var humidity = (double?)parsedResponse["current"]?["humidity"];
-            var chanceOfRain = (double?)parsedResponse["current"]?["chance_of_rain"];
-            var highTemp = (double?)parsedResponse["forecast"]?["forecastday"]?[0]?["day"]?["maxtemp_c"];
-            var lowTemp = (double?)parsedResponse["forecast"]?["forecastday"]?[0]?["day"]?["mintemp_c"];
-
-            if (locationName == null || currentTemp == null || feelsLikeTemp == null || humidity == null || chanceOfRain == null || highTemp == null || lowTemp == null)
+            try
             {
+                var response = await client.GetAsync($"https://api.weatherapi.com/v1/forecast.json?key={apiKey}&q={location}&days=1&aqi=no&alerts=no");
+                response.EnsureSuccessStatusCode();
+                var body = await response.Content.ReadAsStringAsync();
+                var parsedResponse = JObject.Parse(body);
+
+                string weatherConditions;
+                int? dailyWillitSnow = (int?)parsedResponse["forecast"]?["forecastday"]?[0]?["day"]?["daily_will_it_snow"];
+                int? dailyWillitRain = (int?)parsedResponse["forecast"]?["forecastday"]?[0]?["day"]?["daily_will_it_rain"];
+                int? cloud = (int?)parsedResponse["current"]?["cloud"];
+
+                weatherConditions = dailyWillitSnow == 1 ? "Snow"
+                    : dailyWillitRain == 1 ? "Rain"
+                    : cloud > 50 ? "Cloudy"
+                    : "Sunny";
+
+                var locationName = (string?)parsedResponse["location"]?["name"];
+                var currentTemp = (double?)parsedResponse["current"]?["temp_c"];
+                var feelsLikeTemp = (double?)parsedResponse["current"]?["feelslike_c"];
+                var humidity = (double?)parsedResponse["current"]?["humidity"];
+                var highTemp = (double?)parsedResponse["forecast"]?["forecastday"]?[0]?["day"]?["maxtemp_c"];
+                var lowTemp = (double?)parsedResponse["forecast"]?["forecastday"]?[0]?["day"]?["mintemp_c"];
+
+                if (locationName == null || currentTemp == null || feelsLikeTemp == null || humidity == null || highTemp == null || lowTemp == null)
+                {
+                    return null;
+                }
+
+                return new Weather(locationName, currentTemp.Value, feelsLikeTemp.Value, humidity.Value, highTemp.Value, lowTemp.Value, weatherConditions);
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ",ex.Message);
                 return null;
             }
-
-            return new Weather(locationName, currentTemp.Value, feelsLikeTemp.Value, humidity.Value, chanceOfRain.Value, highTemp.Value, lowTemp.Value, weatherConditions);
         }
     }
 }
