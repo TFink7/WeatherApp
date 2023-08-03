@@ -42,10 +42,9 @@ namespace WeatherApp.Models
 
                 return new Weather(locationName, currentTemp.Value, feelsLikeTemp.Value, humidity.Value, highTemp.Value, lowTemp.Value, weatherConditions);
             }
-            catch (HttpRequestException ex)
+            catch (HttpRequestException)
             {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ",ex.Message);
+                Console.WriteLine("\nUnable to fetch weather data. Please input a valid city or postal code.");
                 return null;
             }
         }
