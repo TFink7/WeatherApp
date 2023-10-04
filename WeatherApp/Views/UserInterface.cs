@@ -1,6 +1,7 @@
 using WeatherApp.Models;
 using System;
 using System.Threading.Tasks;
+using WeatherApp.Services;
 
 namespace WeatherApp.Views
 {

@@ -4,13 +4,13 @@ namespace WeatherApp.Models
 {
     public class Weather
     {
-        public string Location { get; set; }
-        public double LocalTemperature { get; set; }
-        public double FeelsLike { get; set; }
-        public double Humidity { get; set; }
-        public double High { get; set; }
-        public double Low { get; set; }
-        public string WeatherConditions { get; set; }
+        public string Location { get; private set; }
+        public double LocalTemperature { get; private set; }
+        public double FeelsLike { get; private set; }
+        public double Humidity { get; private set; }
+        public double High { get; private set; }
+        public double Low { get; private set; }
+        public string WeatherConditions { get; private set; }
 
         public Weather(string location, double localTemperature, double feelsLike, double humidity, double high, double low, string weatherConditions)
         {
