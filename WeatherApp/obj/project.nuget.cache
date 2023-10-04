@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "KfZe9dd/BgesdpQdXRcJL56YRhC7pUEZeSwtjvU/k9BQp/5R7OHzuLwPdXhUNz4oxIoEWT262DIe1ZnBin/+Kw==",
+  "dgSpecHash": "J700E/4jSwiLRvIEtdkGT3kkGwYGSCvK1X8a/FAaFEyH6Btf9PeYXEpvTEK0bSOjji0SxGkBv7nuyXLDM0OOyQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\tom_b\\CsharpProjects\\WeatherApp\\WeatherApp\\WeatherApp.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\tom_b\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
   "logs": []
 }
